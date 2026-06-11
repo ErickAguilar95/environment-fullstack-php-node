@@ -4,6 +4,9 @@
 		"../../docker-compose.yml"
 	],
 	"service": "nodejs-app",
+	"runServices": [
+		"nodejs-app"
+	],
 	"overrideCommand": false,
 	"shutdownAction": "none",
 	"customizations": {

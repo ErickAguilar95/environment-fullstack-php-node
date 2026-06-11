@@ -4,6 +4,9 @@
 		"../../docker-compose.yml"
 	],
 	"service": "php-app",
+	"runServices": [
+		"php-app"
+	],
 	"overrideCommand": false,
 	"shutdownAction": "none",
 	"customizations": {

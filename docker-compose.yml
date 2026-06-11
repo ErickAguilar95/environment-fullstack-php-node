@@ -6,7 +6,6 @@ volumes:
     backend-vscode-server:
     frontend-vscode-server:
     vscode:
-        external: true
 
 services:
     postgres:
