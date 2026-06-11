@@ -71,7 +71,7 @@ services:
                 USER: ${USER}
                 UID: ${UID:-1000}
         image: nodejs-app
-        working_dir: /usr/src/app/wellcome
+        working_dir: /usr/src/app
         command: ["node", "server.js"]
         environment:
             PORT: ${WELLCOME_WEB_PORT}

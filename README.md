@@ -152,7 +152,7 @@ Inicia el servidor dentro de `nodejs-app` en un puerto libre. Debe escuchar en
 docker compose exec nodejs-app sh
 cd /usr/src/app/nuevo
 pnpm install
-pnpm run dev -- --host 0.0.0.0 --port 8081
+pnpm run dev --host 0.0.0.0 --port 8081
 ```
 
 Agrega el dominio a `.docker/docker/app.conf` usando el mismo puerto:
