@@ -205,6 +205,10 @@ lo que no debe descargarse nuevamente al recrear los contenedores:
 - `backend-vscode-server`
 - `frontend-vscode-server`
 
+Ambos servicios también montan el volumen global `vscode` en `/vscode`. Ese
+volumen contiene los binarios compartidos de VS Code Server y evita enlaces
+rotos cuando una segunda ventana de Dev Containers recrea algún servicio.
+
 Para abrir uno, ejecuta en VS Code:
 
 1. `Dev Containers: Open Folder in Container...`
@@ -217,3 +221,7 @@ También puedes abrir la carpeta raíz y usar:
 
 Los scripts `setup.sh` son idempotentes: sólo instalan Oh My Zsh y
 `zsh-autosuggestions` cuando todavía no existen.
+
+Backend y frontend pueden abrirse al mismo tiempo en ventanas distintas de VS
+Code. Ambos usan el mismo proyecto Docker Compose, pero cada configuración se
+adjunta a su propio servicio sin reemplazar el comando principal del contenedor.

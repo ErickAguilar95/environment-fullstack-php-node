@@ -1,8 +1,10 @@
 backend/*
 !backend/.gitkeep
+!backend/wellcome
 
 frontend/*
 !frontend/.gitkeep
+!frontend/wellcome
 
 database/*
 !database/.gitkeep

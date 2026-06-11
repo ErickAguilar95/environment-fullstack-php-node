@@ -5,6 +5,8 @@ networks:
 volumes:
     backend-vscode-server:
     frontend-vscode-server:
+    vscode:
+        external: true
 
 services:
     postgres:
@@ -54,6 +56,7 @@ services:
         volumes:
             - ./backend:/var/www
             - backend-vscode-server:/home/${USER}/.vscode-server
+            - vscode:/vscode
             - ./.devcontainer/backend/setup.sh:/usr/local/bin/devcontainer-setup:ro
             - ./.docker/php.ini:/usr/local/etc/php/php.ini
             - ./.docker/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
@@ -72,7 +75,7 @@ services:
                 UID: ${UID:-1000}
         image: nodejs-app
         working_dir: /usr/src/app
-        command: ["node", "server.js"]
+        command: ["node", "/usr/src/app/wellcome/server.js"]
         environment:
             PORT: ${WELLCOME_WEB_PORT}
         networks:
@@ -80,6 +83,7 @@ services:
         volumes:
             - ./frontend:/usr/src/app
             - frontend-vscode-server:/home/${USER}/.vscode-server
+            - vscode:/vscode
             - ./.devcontainer/frontend/setup.sh:/usr/local/bin/devcontainer-setup:ro
             - ./.docker/.zshrc:/home/${USER}/.zshrc # zshPersonalizado
 

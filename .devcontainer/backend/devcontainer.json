@@ -4,6 +4,7 @@
 		"../../docker-compose.yml"
 	],
 	"service": "php-app",
+	"overrideCommand": false,
 	"shutdownAction": "none",
 	"customizations": {
 		"vscode": {

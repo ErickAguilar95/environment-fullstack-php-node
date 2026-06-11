@@ -4,6 +4,7 @@
 		"../../docker-compose.yml"
 	],
 	"service": "nodejs-app",
+	"overrideCommand": false,
 	"shutdownAction": "none",
 	"customizations": {
 		"vscode": {
