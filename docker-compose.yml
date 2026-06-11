@@ -1,0 +1,100 @@
+networks:
+    network:
+        driver: bridge
+
+volumes:
+    backend-vscode-server:
+    frontend-vscode-server:
+
+services:
+    postgres:
+        image: postgres:16-alpine
+        environment:
+            POSTGRES_DB: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: 123
+        volumes:
+            - ./database/backup:/tmp/backup
+            - ./database/postgres:/var/lib/postgresql/data
+        shm_size: 256M
+        networks:
+            - network
+        ports:
+            - 5432:5432
+
+    nginx:
+        image: nginx:alpine
+        networks:
+            - network
+        ports:
+            - "${NGINX_PORT:-80}:80"
+        volumes:
+            - ./backend:/var/www
+            - ./.docker/app.conf:/etc/nginx/conf.d/app.conf:ro
+        depends_on:
+            - php-app
+            - nodejs-app
+            - pgadmin
+        deploy:
+            resources:
+                limits:
+                    cpus: '.1'
+                    memory: '64M'
+
+    php-app:
+        build:
+            args:
+                USER: ${USER}
+                UID: ${UID:-1000}
+            context: ./
+            dockerfile: ./.docker/php.Dockerfile
+        image: php-app
+        networks:
+            - network
+        volumes:
+            - ./backend:/var/www
+            - backend-vscode-server:/home/${USER}/.vscode-server
+            - ./.devcontainer/backend/setup.sh:/usr/local/bin/devcontainer-setup:ro
+            - ./.docker/php.ini:/usr/local/etc/php/php.ini
+            - ./.docker/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+            - ./.docker/.zshrc:/home/${USER}/.zshrc # zshPersonalizado
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        # ports:
+        #     - 9003:9003 # Exponer el puerto Xdebug
+
+    nodejs-app:
+        build:
+            context: ./
+            dockerfile: ./.docker/nodeJs.Dockerfile
+            args:
+                USER: ${USER}
+                UID: ${UID:-1000}
+        image: nodejs-app
+        working_dir: /usr/src/app/wellcome
+        command: ["node", "server.js"]
+        environment:
+            PORT: ${WELLCOME_WEB_PORT}
+        networks:
+            - network
+        volumes:
+            - ./frontend:/usr/src/app
+            - frontend-vscode-server:/home/${USER}/.vscode-server
+            - ./.devcontainer/frontend/setup.sh:/usr/local/bin/devcontainer-setup:ro
+            - ./.docker/.zshrc:/home/${USER}/.zshrc # zshPersonalizado
+
+    pgadmin:
+        image: dpage/pgadmin4
+        networks:
+            - network
+        environment:
+            PGADMIN_DEFAULT_EMAIL: "root@local.com"
+            PGADMIN_DEFAULT_PASSWORD: root
+            PGADMIN_LISTEN_PORT: "81"
+        deploy:
+            resources:
+                limits:
+                    cpus: '1.5'
+                    memory: '1000M'
+        depends_on:
+            - postgres

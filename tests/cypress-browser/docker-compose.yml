@@ -1,0 +1,20 @@
+version: '3.2'
+
+services:
+    cypress:
+        container_name: cypress
+        build:
+            args:
+                USER: ${USER}
+                UID: ${UID:-1000}
+            context: ./
+            dockerfile: ./.docker/cypress.DockerFile
+        image: cypress/included
+        volumes:
+            - ${PATH_WORK_PROJECT}/cypress/integration:/e2e/cypress/integration
+            - ./.cypress/support:/e2e/cypress/support
+            - ./.cypress/cypress.config.js:/e2e/cypress.config.js
+            - ./.cypress/cypress.env.json:/e2e/cypress.env.json
+            - ./results:/e2e/cypress/results
+            - .env:/e2e/.env
+        network_mode: host

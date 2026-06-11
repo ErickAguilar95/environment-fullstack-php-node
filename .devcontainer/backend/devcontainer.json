@@ -1,0 +1,25 @@
+{
+	"name": "php-app",
+	"dockerComposeFile": [
+		"../../docker-compose.yml"
+	],
+	"service": "php-app",
+	"shutdownAction": "none",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"bmewburn.vscode-intelephense-client",
+				"onecentlin.laravel-blade",
+				"onecentlin.laravel5-snippets",
+				"xdebug.php-debug",
+				"carlboo.tinker-this"
+			],
+			"settings": {
+				"terminal.integrated.shell.linux": "/bin/zsh",
+				"terminal.integrated.defaultProfile.linux": "zsh"
+			}
+		}
+	},
+	"workspaceFolder": "/var/www",
+	"postCreateCommand": "sh /usr/local/bin/devcontainer-setup"
+}

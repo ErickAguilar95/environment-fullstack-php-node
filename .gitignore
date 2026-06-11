@@ -1,0 +1,13 @@
+backend/*
+!backend/.gitkeep
+
+frontend/*
+!frontend/.gitkeep
+
+database/*
+!database/.gitkeep
+database/backup
+!database/backup/.gitkeep
+.pnotes/
+
+.env
